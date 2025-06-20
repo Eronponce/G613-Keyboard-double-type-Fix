@@ -1,21 +1,41 @@
-# 🛠 Fix Keyboard Double Typing – Enhanced Version
+# 🛠 Keyboard Double Typing Fix – AutoHotkey v2
 
-##  Problem
-Certain keyboards, like the **Logitech G613**, may suffer from **double typing**, where a single key press registers multiple times (e.g., `DDDouble Tyypingg`). This script prevents this issue by **blocking rapid repeated keystrokes**.
+## Problem
 
-##  Features
-- **Prevents accidental double typing** by applying a **90ms delay**.
-- Works with **Caps Lock & Shift**, ensuring proper uppercase behavior.
-- Compatible with various **keyboards facing similar issues**.
+Some keyboards — especially wireless or mechanical ones like the **Logitech G613** — suffer from **double typing**, where a single keypress is registered multiple times (e.g., `TTthis iiissue`). This script solves the problem by **blocking repeated keystrokes within a configurable delay window**.
 
-##  How to Use
-1. **Install AutoHotkey** → [Download Here](https://www.autohotkey.com/)
-2. **Download this script** (`Double_Typing_Fix.ahk`).
-3. **Run the script** (Right-click → "Run Script").
-4. **[Optional] Run Automatically on Startup**:
-   - Press **`Win + R`**, type **`shell:startup`**, and hit **Enter**.
-   - Drag and drop `Double_Typing_Fix.ahk` into the folder.
-   - The script will now start automatically when you log in!
+---
 
+## Features
 
-This version is **short, clear, and effective**, making it easy for users to understand and apply the fix quickly.  Let me know if you need any tweaks! 😃
+- ⏱️ **Per-key delay** to prevent accidental double inputs (default: 90ms)
+- 🔠 Supports proper uppercase behavior with **Shift** and **Caps Lock**
+- 🔁 **Toggle on/off** at any time using **Ctrl+H**
+- 🔧 Clean implementation in **AutoHotkey v2**
+- 🎮 Won’t interfere with games if you disable it manually
+
+---
+
+## How to Use
+
+1. **Install AutoHotkey v2**: [Download here](https://www.autohotkey.com/)
+2. Save the script as `DoubleTypingFix.ahk`
+3. Run the script (Right-click → “Run Script” or double-click)
+4. Use **Ctrl + H** to toggle the script on or off
+5. *(Optional)* To run on startup:
+   - Press `Win + R`, type `shell:startup` and hit Enter
+   - Copy or link the script to that folder
+
+---
+
+## Notes
+
+- The script only affects **visible typing keys** (letters, numbers, symbols).
+- It **does not block** Ctrl, Alt, Enter, Shift, etc.
+- Safe to run in the background — toggle it off manually before gaming.
+
+---
+
+## License
+
+MIT – use freely, at your own risk.

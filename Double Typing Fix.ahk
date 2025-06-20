@@ -1,34 +1,70 @@
-#Persistent ; Keeps the script running in the background
-SetTitleMatchMode, 2 ; Allows partial window title matching
+#Requires AutoHotkey v2.0
+SetTitleMatchMode(2)
 
-delay := 90 ; Defines the delay (in milliseconds) between allowed key presses
-lastKeyPressTime := {} ; Stores the last key press time for each key
+delay := 90
+lastKeyPressTime := Map()
+global scriptEnabled := true
+global keys := [
+    "a","b","c","d","e","f","g","i","j","k","l","m",
+    "n","o","p","q","r","s","t","u","v","w","x","y","z",
+    "0","1","2","3","4","5","6","7","8","9",
+    "-", "=", "[", "]", ";", "'", ",", ".", "/", "\\"
+]
 
-; Hotkeys for the specific keys: E, A, W, F (add yours)
-$e::
-$a::
-$w::
-$f::
-    key := SubStr(A_ThisHotkey, 2) ; Extracts the pressed key from the hotkey
-    current_time := A_TickCount ; Gets the current system tick count (time in milliseconds)
+EnableHotkeys()
 
-    ; Check if enough time has passed since the last key press
-    if (!lastKeyPressTime[key] or (current_time - lastKeyPressTime[key] >= delay)) {
-        lastKeyPressTime[key] := current_time ; Update last key press time
+^h:: {
+    global scriptEnabled
+    scriptEnabled := !scriptEnabled
 
-        ; Ensure Shift and Caps Lock work correctly for uppercase letters
-        if (GetKeyState("CapsLock", "T") xor GetKeyState("Shift", "P")) {
-            StringUpper, key, key ; Convert the key to uppercase
+    if scriptEnabled {
+        EnableHotkeys()
+        ToolTip("🔵 Script ENABLED")
+    } else {
+        DisableHotkeys()
+        ToolTip("🔴 Script DISABLED")
+    }
+    SetTimer(RemoveTooltip, -1500)
+}
+
+EnableHotkeys() {
+    global keys
+    for key in keys {
+        Hotkey("$" key, CreateHandler(key), "On")
+    }
+}
+
+DisableHotkeys() {
+    global keys
+    for key in keys {
+        Hotkey("$" key, "Off")
+    }
+}
+
+CreateHandler(k) {
+    return (*) => HandleKey(k)
+}
+
+HandleKey(key) {
+    global delay, lastKeyPressTime
+
+    currentTime := A_TickCount
+    lastTime := lastKeyPressTime.Has(key) ? lastKeyPressTime[key] : 0
+
+    if (currentTime - lastTime >= delay) {
+        lastKeyPressTime[key] := currentTime
+
+        if (StrLen(key) = 1 && (GetKeyState("CapsLock", "T") != GetKeyState("Shift", "P"))) {
+            key := StrUpper(key)
         }
 
-        SendInput, %key% ; Send the processed key input to the system
+        SendText(key)
     } else {
-        ; Display a tooltip message if the key press is blocked due to rapid input
-        Tooltip, Key %key% blocked!
-        SetTimer, RemoveTooltip, 1000 ; Set a timer to remove the tooltip after 1 second
+        ToolTip("⛔ Key '" key "' blocked")
+        SetTimer(RemoveTooltip, -1000)
     }
-return
+}
 
-RemoveTooltip:
-    Tooltip ; Clears the tooltip
-return
+RemoveTooltip(*) {
+    ToolTip()
+}
